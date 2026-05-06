@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jake's Wheel of Stuff</title>
+  <meta name="description" content="Jake's Wheel of Stuff — a spinning decision wheel for anything." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── SETUP SCREEN ──────────────────────────────────────────── -->
+  <div id="screen-setup" class="screen active">
+    <div class="setup-container">
+      <div class="setup-header">
+        <h1>Jake's Wheel of Stuff</h1>
+      </div>
+
+      <div class="input-area">
+        <div class="input-controls">
+          <textarea
+            id="setup-input"
+            placeholder="Enter one item per line&#10;e.g.&#10;Option A&#10;Option B&#10;Option C"
+            spellcheck="false"
+          ></textarea>
+          <div class="input-meta">
+            <span id="item-count">0 / 100</span>
+            <button id="clear-btn" class="btn-ghost">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn-primary" disabled>
+        <span>Spin the Wheel</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 3l14 9-14 9V3z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── WHEEL SCREEN ───────────────────────────────────────────── -->
+  <div id="screen-wheel" class="screen">
+    <header class="wheel-header">
+      <h2 class="wheel-title">Jake's Wheel of Stuff</h2>
+      <button id="options-btn" class="btn-icon" title="Edit options">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="wheel-stage">
+      <!-- Ticker arrow -->
+      <div class="ticker">
+        <div class="ticker-arrow"></div>
+      </div>
+
+      <!-- Canvas wheel -->
+      <canvas id="wheel-canvas" width="560" height="560"></canvas>
+
+      <!-- Spin hint -->
+      <p class="spin-hint" id="spin-hint">Click the wheel to spin</p>
+    </div>
+  </div>
+
+  <!-- ── OPTIONS PANEL (slide-in) ──────────────────────────────── -->
+  <div id="options-overlay" class="overlay hidden"></div>
+  <aside id="options-panel" class="options-panel hidden">
+    <div class="options-header">
+      <h3>Edit Wheel</h3>
+      <button id="options-close" class="btn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="options-body">
+      <!-- Speed control -->
+      <label class="options-label">Spin Speed</label>
+      <div class="speed-row">
+        <span class="speed-label">Slow</span>
+        <input type="range" id="speed-slider" min="1" max="5" step="1" value="3" />
+        <span class="speed-label">Fast</span>
+      </div>
+      <div class="options-divider"></div>
+
+      <label class="options-label">Items (one per line)</label>
+      <textarea id="options-input" spellcheck="false"></textarea>
+      <div class="input-meta">
+        <span id="options-count">0 / 100</span>
+      </div>
+    </div>
+    <div class="options-footer">
+      <button id="options-save" class="btn-primary">Save &amp; Update Wheel</button>
+    </div>
+  </aside>
+
+  <!-- ── WINNER OVERLAY ────────────────────────────────────────── -->
+  <div id="winner-overlay" class="winner-overlay hidden">
+    <div class="winner-card">
+      <p class="winner-label">You got:</p>
+      <h2 id="winner-text" class="winner-name"></h2>
+      <p class="winner-sub">Click the wheel to spin again</p>
+    </div>
+  </div>
+
+  <!-- ── CONFETTI CANVAS ───────────────────────────────────────── -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
