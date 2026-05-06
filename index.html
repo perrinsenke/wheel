@@ -55,13 +55,12 @@
     </header>
 
     <div class="wheel-stage">
-      <!-- Ticker arrow -->
-      <div class="ticker">
-        <div class="ticker-arrow"></div>
-      </div>
 
-      <!-- Canvas wheel -->
-      <canvas id="wheel-canvas" width="560" height="560"></canvas>
+      <!-- Canvas + ticker in a wrapper so ticker is positioned relative to canvas -->
+      <div class="wheel-wrapper">
+        <canvas id="wheel-canvas" width="560" height="560"></canvas>
+        <div class="ticker"><div class="ticker-arrow"></div></div>
+      </div>
 
       <!-- Spin hint -->
       <p class="spin-hint" id="spin-hint">Click the wheel to spin</p>
