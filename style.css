@@ -185,28 +185,37 @@ textarea::placeholder { color: var(--muted); }
   padding-top: 70px;
 }
 
-/* Ticker */
+
+/* Wheel wrapper — ticker positioned relative to this */
+.wheel-wrapper {
+  position: relative;
+  width: min(560px, 84vw);
+  height: min(560px, 84vw);
+  flex-shrink: 0;
+}
+
+/* Ticker — anchored to exact center-right of the canvas (= angle 0) */
 .ticker {
   position: absolute;
-  top: calc(70px + 50%);
-  left: 50%;
-  transform: translate(-50%, -50%) translateX(calc(min(280px,42vw) + 14px));
-  z-index: 5;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
   pointer-events: none;
+  padding-left: 8px;
 }
 .ticker-arrow {
   width: 0;
   height: 0;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-  border-right: 28px solid #fc5c9c;
-  filter: drop-shadow(0 0 8px rgba(252,92,156,.7));
+  border-top:    28px solid transparent;
+  border-bottom: 28px solid transparent;
+  border-right:  52px solid #fc5c9c;
+  filter: drop-shadow(0 0 10px rgba(252,92,156,.8));
 }
 
 /* Canvas */
 #wheel-canvas {
-  width: min(560px, 84vw);
-  height: min(560px, 84vw);
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   cursor: pointer;
   transition: transform .1s;
